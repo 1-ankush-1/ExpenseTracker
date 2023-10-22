@@ -21,6 +21,7 @@ function registerUser(e) {
     let { confirmpassword, ...updatedUserData } = userdata;
     axios.post("http://localhost:3000/auth/signup", updatedUserData).then((result) => {
         if (result.status === 200) {
+            alert(result.data.message);
             window.location.href = "../../login/html/login.html";
         }
     }).catch(err => {
