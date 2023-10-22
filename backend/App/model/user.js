@@ -1,7 +1,7 @@
 const Sequelize = require("sequelize");
 const sequelize = require("../config/connect.js");
 
-const Signup = sequelize.define("signup", {
+const User = sequelize.define("user", {
     id: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
@@ -14,7 +14,8 @@ const Signup = sequelize.define("signup", {
     },
     email: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
+        unique: true
     },
     phone: {
         type: Sequelize.STRING,
@@ -26,4 +27,4 @@ const Signup = sequelize.define("signup", {
     }
 })
 
-module.exports = Signup;
+module.exports = User;
