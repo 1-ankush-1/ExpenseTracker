@@ -19,6 +19,7 @@ exports.signup = (req, res, next) => {
     }).then((result) => {
         //no user create one
         if (!result) {
+            //hash the password
             bcrypt.hash(user.password, parseInt(process.env.SALT), (err, hash) => {
                 if (err) {
                     console.log(`${err} in signup`)
@@ -67,6 +68,7 @@ exports.login = (req, res, next) => {
                 message: "User not found"
             })
         }
+        //compare incoming password with saved hash
         bcrypt.compare(password, user.password, (err, result) => {
             if (err) {
                 console.log(`${err} in login `)
@@ -75,8 +77,10 @@ exports.login = (req, res, next) => {
                 })
             }
             if (result) {
+                //except password send everything
+                let { password: userPassword, ...userDataToSend } = user.dataValues;
                 return res.status(200).json({
-                    message: "User login sucessful", permission: true
+                    message: "User login sucessful", permission: true, data: userDataToSend
                 })
             } else {
                 return res.status(401).json({

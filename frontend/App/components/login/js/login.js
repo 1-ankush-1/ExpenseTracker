@@ -14,6 +14,8 @@ function Login(e) {
     axios.post("http://localhost:3000/auth/login", userdata).then((result) => {
         if (result.status === 200) {
             alert(result.data.message);
+            console.log(result.data.data);
+            localStorage.setItem("userInfo", JSON.stringify(result.data.data));
             window.location.href = "../../home/html/home.html";
         }
     }).catch(err => {
