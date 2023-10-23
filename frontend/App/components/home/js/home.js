@@ -5,8 +5,9 @@ async function onloadData() {
         if (!usertoken) {
             window.location.href = "../../login/html/login.html";
         }
-        if (!userInfo.ispremiumuser) {
-            buyPremium.removeAttribute("hidden");
+
+        if (userInfo.ispremiumuser) {
+            buyPremium.setAttribute("hidden", "");
         }
         //get data
         const expenses = await axios.get(`http://localhost:3000/expense`, {
@@ -179,23 +180,25 @@ function toRazorPay(e) {
             Authorization: usertoken
         }
     }).then(res => {
-        if (res.status === 200) {
-            // console.log(res);
+        console.log(res);
+        if (res.status === 201) {
             let options = {
                 //order detail we get from backend so noone manuplate them directly
                 "key": res.data.data.key_id,
                 "order_id": res.data.data.order.id,
                 //this will handel the response after the payment(update the order table)
-                "handler": (res) => {
+                "handler": (result) => {
+                    console.log(result);
                     axios.post(`http://localhost:3000/purchase/updatetransactionstatus`, {
                         order_id: options.order_id,
-                        payment_id: res.reazorpay_payment_id
+                        payment_id: result.razorpay_payment_id
                     }, {
                         headers: {
                             Authorization: usertoken
                         }
                     }).then(() => {
                         alert("you are a premium user now")
+                        buyPremium.setAttribute("hidden", "");
                     }).catch(err => {
                         console.log(err);
                         alert(err.response.data.message);
@@ -203,7 +206,7 @@ function toRazorPay(e) {
                 }
             }
             //create new object of razor pay
-            const payrazor = new toRazorPay(options);
+            const payrazor = new window.Razorpay(options);
             //open modal of razorpay
             payrazor.open();
             //call a modal to hide default behavior
@@ -211,7 +214,20 @@ function toRazorPay(e) {
             //if payment 
             payrazor.on('payment.failed', (response) => {
                 // console.log(response);
-                alert("something went wrong");
+                console.log(response);
+                axios.post(`http://localhost:3000/purchase/failedtransaction`, {
+                    order_id: response.error.metadata.order_id,
+                    payment_id: response.error.metadata.payment_id
+                }, {
+                    headers: {
+                        Authorization: usertoken
+                    }
+                }).then(() => {
+                    alert("TRANSACTION FAILED.")
+                }).catch(err => {
+                    console.log(err);
+                    alert(err.response.data.message);
+                });
             })
         }
     }).catch(err => {
@@ -220,7 +236,6 @@ function toRazorPay(e) {
             alert(err.response.data.message);
         }
     });
-    console.log("clicked");
 }
 
 //variables

@@ -1,18 +1,21 @@
-const Razorpay = require("razorpay");
+const Razorpay = require('razorpay');
 const { Order, User } = require("../model/index.js");
 
 exports.buyPremium = (req, res, next) => {
 
     try {
         //new object of razorpay
-        let payrazor = new Razorpay({
+        var payrazor = new Razorpay({
             key_id: process.env.RAZORPAY_KEY_ID,
             key_secret: process.env.RAZORPAY_KEY_SECRET
         })
-        //your amount 
-        const amount = 1;
+        //options to add
+        var razorPayOptions = {
+            amount: 2500,
+            currency: "INR",
+        };
         //the detail you want to show to create order 
-        payrazor.orders.create({ amount, currency: "INR" }, (err, order) => {
+        payrazor.orders.create(razorPayOptions, (err, order) => {
             if (err) {
                 throw new Error(JSON.stringify(err));
             }
@@ -39,7 +42,8 @@ exports.buyPremium = (req, res, next) => {
 }
 
 exports.updateTransactionStatus = (req, res, next) => {
-    const { payment_id, order_id } = res.body;
+    const { payment_id, order_id } = req.body;
+    const userId = req.userId;
 
     Order.findOne({
         where: {
@@ -48,8 +52,8 @@ exports.updateTransactionStatus = (req, res, next) => {
     }).then(order => {
         //do it together
         Promise.all([
-            order.update({ payment_id: payment_id, status: "SUCCESSFULL" }),
-            User.update({ ispremiumuser: true })
+            order.update({ paymentid: payment_id, status: "SUCCESSFULL", userId }),
+            User.update({ ispremiumuser: true }, { where: { id: userId } })
         ]).then(() => {
             return res.status(202).json({
                 message: "Transaction Successfull"
@@ -57,7 +61,34 @@ exports.updateTransactionStatus = (req, res, next) => {
         }).catch((err) => {
             throw new Error(err);
         });
+
     }).catch((err) => {
-        throw new Error(err);
+        console.log(`${err} in updateTransactionStatus`)
+        //forbiden
+        res.status(403).json({ message: 'Sometghing went wrong' })
     })
+}
+
+exports.transactionFailed = (req, res, next) => {
+    const { payment_id, order_id } = req.body;
+    const userId = req.userId;
+
+    Order.findOne({
+        where: {
+            orderid: order_id
+        }
+    }).then(order => {
+        order.update({ paymentid: payment_id, status: "FAILED", userId })
+            .then(() => {
+                return res.status(400).json({
+                    message: "Transaction failed"
+                });
+            })
+            .catch((err) => {
+                throw new Error(err);
+            });
+    }).catch(err => {
+        console.log(`${err} in transactionFailed`)
+        res.status(403).json({ message: 'Sometghing went wrong' })
+    });
 }
