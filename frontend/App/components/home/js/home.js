@@ -5,6 +5,9 @@ async function onloadData() {
         if (!usertoken) {
             window.location.href = "../../login/html/login.html";
         }
+        if (!userInfo.ispremiumuser) {
+            buyPremium.removeAttribute("hidden");
+        }
         //get data
         const expenses = await axios.get(`http://localhost:3000/expense`, {
             headers: {
@@ -169,6 +172,57 @@ function removeChild(row) {
     });
 }
 
+function toRazorPay(e) {
+    e.preventDefault();
+    axios.get(`http://localhost:3000/purchase/buypremium`, {
+        headers: {
+            Authorization: usertoken
+        }
+    }).then(res => {
+        if (res.status === 200) {
+            // console.log(res);
+            let options = {
+                //order detail we get from backend so noone manuplate them directly
+                "key": res.data.data.key_id,
+                "order_id": res.data.data.order.id,
+                //this will handel the response after the payment(update the order table)
+                "handler": (res) => {
+                    axios.post(`http://localhost:3000/purchase/updatetransactionstatus`, {
+                        order_id: options.order_id,
+                        payment_id: res.reazorpay_payment_id
+                    }, {
+                        headers: {
+                            Authorization: usertoken
+                        }
+                    }).then(() => {
+                        alert("you are a premium user now")
+                    }).catch(err => {
+                        console.log(err);
+                        alert(err.response.data.message);
+                    });
+                }
+            }
+            //create new object of razor pay
+            const payrazor = new toRazorPay(options);
+            //open modal of razorpay
+            payrazor.open();
+            //call a modal to hide default behavior
+            e.preventDefault();
+            //if payment 
+            payrazor.on('payment.failed', (response) => {
+                // console.log(response);
+                alert("something went wrong");
+            })
+        }
+    }).catch(err => {
+        console.log(err);
+        if (err.response && (err.response.status === 404 || err.response.status === 500)) {
+            alert(err.response.data.message);
+        }
+    });
+    console.log("clicked");
+}
+
 //variables
 const tbody = document.getElementById("tablebody");
 const form = document.getElementById("MainForm");
@@ -178,7 +232,9 @@ const logout = document.getElementById("logout").addEventListener("click", (e) =
     localStorage.removeItem("token");
     window.location.href = "../../login/html/login.html";
 })
+const buyPremium = document.getElementById("buy_premium");
 
 //event listeners
 tbody.addEventListener("click", deleteNEditExpense);
 form.addEventListener("submit", addExpense);
+buyPremium.addEventListener("click", toRazorPay);
