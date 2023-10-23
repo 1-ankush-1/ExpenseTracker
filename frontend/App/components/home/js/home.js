@@ -1,13 +1,14 @@
 const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+const usertoken = localStorage.getItem("token");
 async function onloadData() {
     try {
-        if (!localStorage.getItem("userInfo")) {
+        if (!usertoken) {
             window.location.href = "../../login/html/login.html";
         }
         //get data
-        const expenses = await axios.get(`http://localhost:3000/expense/${userInfo.id}`, {
+        const expenses = await axios.get(`http://localhost:3000/expense`, {
             headers: {
-                Authorization: 'Bearer ' + true //sending token
+                Authorization: usertoken
             }
         });
 
@@ -24,6 +25,9 @@ async function onloadData() {
         }
     } catch (err) {
         console.log(err);
+        if (err.response && (err.response.status === 404 || err.response.status === 500)) {
+            alert(err.response.data.message)
+        }
     }
 }
 
@@ -42,9 +46,11 @@ function addExpense(e) {
         expense[name] = value;
     }
 
-    expense["userId"] = userInfo.id;
-
-    axios.post("http://localhost:3000/expense/add", expense).then((res) => {
+    axios.post("http://localhost:3000/expense/add", expense, {
+        headers: {
+            Authorization: usertoken
+        }
+    }).then((res) => {
         //when get response from backend add it in localstorage
         if (Object.keys(res?.data.data).length > 0) {
             //add the new expense in array
@@ -60,7 +66,12 @@ function addExpense(e) {
             //reset the input field data
             form.reset();
         }
-    }).catch(err => console.log(err));
+    }).catch(err => {
+        console.log(err)
+        if (err.response && (err.response.status === 404 || err.response.status === 500)) {
+            alert(err.response.data.message)
+        }
+    });
 }
 
 
@@ -130,7 +141,11 @@ function deleteNEditExpense(e) {
 
 function removeChild(row) {
     //delete item from server and localstorage
-    axios.delete(`http://localhost:3000/expense/delete/${row.id}`).then((res) => {
+    axios.delete(`http://localhost:3000/expense/delete/${row.id}`, {
+        headers: {
+            Authorization: usertoken
+        }
+    }).then((res) => {
         //when item get deleted
         if (res.status === 200) {
             tbody.removeChild(row);
@@ -146,7 +161,12 @@ function removeChild(row) {
             //set the data again
             localStorage.setItem("expenses", JSON.stringify(result));
         }
-    }).catch(err => console.log(err));
+    }).catch(err => {
+        console.log(err);
+        if (err.response && (err.response.status === 404 || err.response.status === 500)) {
+            alert(err.response.data.message);
+        }
+    });
 }
 
 //variables
@@ -154,7 +174,8 @@ const tbody = document.getElementById("tablebody");
 const form = document.getElementById("MainForm");
 const logout = document.getElementById("logout").addEventListener("click", (e) => {
     e.preventDefault();
-    localStorage.removeItem("userInfo")
+    localStorage.removeItem("userInfo");
+    localStorage.removeItem("token");
     window.location.href = "../../login/html/login.html";
 })
 

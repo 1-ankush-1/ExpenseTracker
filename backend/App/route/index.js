@@ -1,10 +1,11 @@
 const express = require("express");
 const router = express.Router();
+const Authentication = require("../middleware/authenticate-user.js")
 const authRoutes = require("./auth-routes.js");
 const expenseRoutes = require("./expense-routes.js");
 
 router.use("/auth", authRoutes);
-router.use("/expense", expenseRoutes);
+router.use("/expense", Authentication, expenseRoutes);
 
 //if no route found
 router.use((req, res, next) => {
