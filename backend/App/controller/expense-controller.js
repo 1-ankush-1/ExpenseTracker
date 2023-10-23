@@ -1,12 +1,16 @@
 const { Expense } = require("../model/index.js");
 
 exports.getAllExpense = (req, res, next) => {
+    //cred
     const userId = req.userId;
+
+    //check for empty
     if (!userId) {
         res.status(404).json({
             message: "missing user id"
         });
     }
+
     Expense.findAll({
         where: {
             userId: userId
@@ -27,13 +31,13 @@ exports.getAllExpense = (req, res, next) => {
 exports.addExpense = (req, res, next) => {
     const { amt, desc, catogary } = req.body;
     const userId = req.userId;
-
+    //check for empty
     if (!amt || !desc || !catogary || !userId) {
         return res.status(404).json({
             message: "some field are empty",
         })
     }
-
+    //create a object
     const expense = { amt, desc, catogary, userId }
 
     Expense.create(expense).then((data) => {
@@ -48,6 +52,9 @@ exports.addExpense = (req, res, next) => {
 
 exports.deleteExpense = (req, res, next) => {
     const { id } = req.params;
+    const userId = req.userId;
+
+    //check for empty
     if (!id) {
         res.status(404).json({
             message: "missing expense id"
@@ -56,7 +63,8 @@ exports.deleteExpense = (req, res, next) => {
 
     Expense.destroy({
         where: {
-            id: id
+            id: id,
+            userId: userId
         }
     }).then(() => {
         res.status(200).json("Expense get deleted successfully");
