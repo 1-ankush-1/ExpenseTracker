@@ -1,5 +1,7 @@
 const loginform = document.getElementById("loginform");
 loginform.addEventListener("submit", Login);
+const openforgotpassword = document.getElementById("openforgotpassword");
+openforgotpassword.addEventListener("click", handelForgotPassword);
 
 function Login(e) {
     e.preventDefault();
@@ -25,4 +27,9 @@ function Login(e) {
             alert(err.response.data.message)
         }
     })
+}
+
+function handelForgotPassword(e) {
+    e.preventDefault();
+    window.location.href = "../../login/html/forgot.html"
 }
