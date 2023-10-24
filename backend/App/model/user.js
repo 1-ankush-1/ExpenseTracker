@@ -29,6 +29,11 @@ const User = sequelize.define("user", {
         type: Sequelize.BOOLEAN,
         allowNull: false,
         defaultValue: false
+    },
+    totalexpenses: {
+        type: Sequelize.DOUBLE,
+        allowNull: false,
+        defaultValue: 0
     }
 })
 

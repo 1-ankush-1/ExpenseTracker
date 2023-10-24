@@ -199,7 +199,7 @@ function leaderBoardHtml(user) {
     name.textContent = user.name;
     name.setAttribute("style", "--bs-table-bg-type: white !important;");
     const ttlexpense = document.createElement("td");
-    ttlexpense.textContent = user.totalexpense ?? 0;
+    ttlexpense.textContent = user.totalexpenses ?? 0;
 
     //adding td in row
     row.appendChild(name);

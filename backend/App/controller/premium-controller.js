@@ -1,5 +1,4 @@
-const { Sequelize } = require("sequelize");
-const { User, Expense } = require("../model");
+const { User } = require("../model");
 
 exports.allLeaderBoardData = (req, res, next) => {
 
@@ -7,14 +6,9 @@ exports.allLeaderBoardData = (req, res, next) => {
         attributes: [
             "id",
             "name",
-            [Sequelize.fn('SUM', Sequelize.col('expenses.amt')), 'totalexpense']
+            "totalexpenses"
         ],
-        include: [{
-            model: Expense,
-            attributes: []
-        }],
-        group: ['User.id'],
-        order: [['totalexpense', 'DESC']]
+        order: [['totalexpenses', 'DESC']]
     }).then(result => {
         res.status(200).json({
             message: "successfully fetched",

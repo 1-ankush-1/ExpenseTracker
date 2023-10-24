@@ -1,4 +1,4 @@
-const { Expense } = require("../model/index.js");
+const { Expense, User } = require("../model/index.js");
 
 exports.getAllExpense = (req, res, next) => {
     //cred
@@ -40,8 +40,13 @@ exports.addExpense = (req, res, next) => {
     //create a object
     const expense = { amt, desc, catogary, userId }
 
-    Expense.create(expense).then((data) => {
-        return res.status(200).json({ message: "Expense added successfully", data: data });
+    Promise.all([
+        User.findByPk(userId),
+        Expense.create(expense)
+    ]).then(([user, expense]) => {
+        user.totalexpenses += amt;
+        user.save();
+        return res.status(200).json({ message: "Expense added successfully", data: expense });
     }).catch(err => {
         console.log(`${err} in addExpense`)
         res.status(500).json({
