@@ -1,23 +1,26 @@
 const { Sequelize } = require("sequelize");
-const sequalize = require("../config/connect.js")
+const { User, Expense } = require("../model");
 
 exports.allLeaderBoardData = (req, res, next) => {
 
-    sequalize.query(`
-        SELECT user.id, user.name, 
-            SUM(expenses.amt) AS totalexpense 
-            FROM users AS user 
-            LEFT OUTER JOIN expenses  
-            ON user.id = expenses.userId
-            GROUP BY user.id 
-            ORDER BY totalexpense DESC`, {
-        type: Sequelize.QueryTypes.SELECT
+    User.findAll({
+        attributes: [
+            "id",
+            "name",
+            [Sequelize.fn('SUM', Sequelize.col('expenses.amt')), 'totalexpense']
+        ],
+        include: [{
+            model: Expense,
+            attributes: []
+        }],
+        group: ['User.id'],
+        order: [['totalexpense', 'DESC']]
     }).then(result => {
         res.status(200).json({
             message: "successfully fetched",
             data: result
         })
-        console.log(result)
+
     }).catch(err => {
         console.log(`${err} in allLeaderBoardData`);
         res.status(500).json({
