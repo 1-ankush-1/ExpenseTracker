@@ -5,8 +5,10 @@ async function onloadData() {
         if (!usertoken) {
             window.location.href = "../../login/html/login.html";
         }
-
+        //add premium
         if (userInfo.ispremiumuser) {
+            document.getElementById("Premium").removeAttribute("hidden");
+            document.getElementById("openleaderboard").removeAttribute("hidden");
             buyPremium.setAttribute("hidden", "");
         }
         //get data
@@ -173,6 +175,60 @@ function removeChild(row) {
     });
 }
 
+function leaderBoardHandler(e) {
+    e.preventDefault();
+    if (e.target.textContent.includes("LeaderBoard")) {
+        leaderboardtable.removeAttribute("hidden");
+        expensetable.setAttribute("hidden", "");
+        e.target.textContent = "My Expense";
+        fetchLeaderBoardResult();
+    } else if (e.target.textContent.includes("My Expense")) {
+        expensetable.removeAttribute("hidden");
+        leaderboardtable.setAttribute("hidden", "");
+        e.target.textContent = "LeaderBoard"
+    }
+}
+
+function leaderBoardHtml(user) {
+    //row 
+    const row = document.createElement("tr");
+    row.className = "bg-light"
+
+    //td
+    const name = document.createElement("td");
+    name.textContent = user.name;
+    cato.setAttribute("style", "--bs-table-bg-type: white !important;");
+    const ttlexpense = document.createElement("td");
+    ttlexpense.textContent = data.totalexpense;
+
+    //adding td in row
+    row.appendChild(name);
+    row.appendChild(ttlexpense);
+
+    const tbody = document.getElementById("leaderboardtablebody");
+    row.id = data.id;
+
+    //add row in body
+    tbody.appendChild(row);
+}
+
+function fetchLeaderBoardResult() {
+    axios.get(`http://localhost:3000/premium/leaderboard`, {
+        headers: {
+            Authorization: usertoken
+        }
+    }).then(results => {
+        if (results.status === 200) {
+            results.data.data.map(user => {
+                leaderBoardHtml(user)
+            })
+        }
+    }).catch(err => {
+        console.log(`${err} fetchLeaderBoardResult`);
+        alert(err.response.data.message);
+    })
+}
+
 function toRazorPay(e) {
     e.preventDefault();
     axios.get(`http://localhost:3000/purchase/buypremium`, {
@@ -198,7 +254,9 @@ function toRazorPay(e) {
                         }
                     }).then(() => {
                         alert("you are a premium user now")
+                        document.getElementById("Premium").removeAttribute("hidden");
                         buyPremium.setAttribute("hidden", "");
+                        document.getElementById("openleaderboard").removeAttribute("hidden");
                     }).catch(err => {
                         console.log(err);
                         alert(err.response.data.message);
@@ -248,8 +306,13 @@ const logout = document.getElementById("logout").addEventListener("click", (e) =
     window.location.href = "../../login/html/login.html";
 })
 const buyPremium = document.getElementById("buy_premium");
+const openleaderboard = document.getElementById("openleaderboard")
+const DisplaySide = document.getElementById("DisplaySide");
+const expensetable = document.getElementById("expensetable");
+const leaderboardtable = document.getElementById("leaderboardtable");
 
 //event listeners
 tbody.addEventListener("click", deleteNEditExpense);
 form.addEventListener("submit", addExpense);
 buyPremium.addEventListener("click", toRazorPay);
+openleaderboard.addEventListener("click", leaderBoardHandler);

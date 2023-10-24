@@ -4,10 +4,12 @@ const Authentication = require("../middleware/authenticate-user.js")
 const authRoutes = require("./auth-routes.js");
 const expenseRoutes = require("./expense-routes.js");
 const purchaseRoutes = require("./purchase-routes.js");
+const premiumRoutes = require("./premium-routes.js");
 
 router.use("/auth", authRoutes);
 router.use("/expense", Authentication, expenseRoutes);
 router.use("/purchase", Authentication, purchaseRoutes);
+router.use("/premium", Authentication, premiumRoutes);
 
 //if no route found
 router.use((req, res, next) => {
