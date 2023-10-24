@@ -197,16 +197,16 @@ function leaderBoardHtml(user) {
     //td
     const name = document.createElement("td");
     name.textContent = user.name;
-    cato.setAttribute("style", "--bs-table-bg-type: white !important;");
+    name.setAttribute("style", "--bs-table-bg-type: white !important;");
     const ttlexpense = document.createElement("td");
-    ttlexpense.textContent = data.totalexpense;
+    ttlexpense.textContent = user.totalexpense ?? 0;
 
     //adding td in row
     row.appendChild(name);
     row.appendChild(ttlexpense);
 
     const tbody = document.getElementById("leaderboardtablebody");
-    row.id = data.id;
+    row.id = user.id;
 
     //add row in body
     tbody.appendChild(row);
@@ -219,9 +219,14 @@ function fetchLeaderBoardResult() {
         }
     }).then(results => {
         if (results.status === 200) {
-            results.data.data.map(user => {
+            const leaderboardtablebody = document.getElementById("leaderboardtablebody");
+            while (leaderboardtablebody.firstChild) {
+                leaderboardtablebody.removeChild(leaderboardtablebody.firstChild);
+            }
+            const users = results.data.data;
+            for (let user of users) {
                 leaderBoardHtml(user)
-            })
+            }
         }
     }).catch(err => {
         console.log(`${err} fetchLeaderBoardResult`);
