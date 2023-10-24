@@ -1,3 +1,4 @@
+const sequelize = require("../config/connect.js");
 const { Expense, User } = require("../model/index.js");
 
 exports.getAllExpense = (req, res, next) => {
@@ -28,71 +29,82 @@ exports.getAllExpense = (req, res, next) => {
     });
 }
 
-exports.addExpense = (req, res, next) => {
-    const { amt, desc, catogary } = req.body;
-    const userId = req.userId;
-    //check for empty
-    if (!amt || !desc || !catogary || !userId) {
-        return res.status(404).json({
-            message: "some field are empty",
-        })
-    }
-    //create a object
-    const expense = { amt, desc, catogary, userId }
+exports.addExpense = async (req, res, next) => {
+    const t = await sequelize.transaction();
+    try {
+        const { amt, desc, catogary } = req.body;
+        const userId = req.userId;
+        //check for empty
+        if (!amt || !desc || !catogary || !userId) {
+            return res.status(404).json({
+                message: "some field are empty",
+            })
+        }
+        //create a object
+        const expense = { amt, desc, catogary, userId }
 
-    Promise.all([
-        User.findByPk(userId),
-        Expense.create(expense)
-    ]).then(([user, expense]) => {
-        user.totalexpenses += parseFloat(amt);
-        user.save();
-        return res.status(200).json({ message: "Expense added successfully", data: expense });
-    }).catch(err => {
+        //added transaction for atomicity
+        const userResult = await User.findByPk(userId, { transaction: t });
+        const expenseResult = await Expense.create(expense, { transaction: t });
+        userResult.totalexpenses += parseFloat(amt);
+        //update user totalexpenses
+        await userResult.save({ transaction: t });
+        await t.commit();
+        res.status(200).json({ message: "Expense added successfully", data: expenseResult });
+    } catch (err) {
+        await t.rollback();
         console.log(`${err} in addExpense`)
         res.status(500).json({
             message: "not able to add expense try again"
-        });
-    })
+        })
+    }
 }
 
-exports.deleteExpense = (req, res, next) => {
-    const { id } = req.params;
-    const userId = req.userId;
+exports.deleteExpense = async (req, res, next) => {
+    const t = await sequelize.transaction();
+    try {
+        const { id } = req.params;
+        const userId = req.userId;
 
-    //check for empty
-    if (!id) {
-        res.status(404).json({
-            message: "missing expense id"
-        });
-    }
-    
-    //find expense to get amt remove the amt from total expense
-    Expense.findOne({
-        where: {
-            id: id,
-            userId: userId
+        //check for empty
+        if (!id) {
+            res.status(404).json({
+                message: "missing expense id"
+            });
         }
-    }).then((expense) => {
-        Promise.all([
-            User.findByPk(userId),
+
+        //find expense to get amt remove the amt from total expense
+        const expense = await Expense.findOne({
+            where: {
+                id: id,
+                userId: userId
+            }
+        }, { transaction: t });
+
+        //find  user and delete the expense
+        const [user,] = await Promise.all([
+            User.findByPk(userId, { transaction: t }),
             Expense.destroy({
                 where: {
                     id: id,
                     userId: userId
-                }
-            })
-        ]).then(([user,]) => {
-            user.totalexpenses -= parseFloat(expense.amt);
-            user.save();
-            return res.status(200).json("Expense get deleted successfully");
-        }).catch(err => { throw new Error(err); })
-    }).catch(err => {
+                },
+            }, { transaction: t })
+        ]);
+
+        user.totalexpenses -= parseFloat(expense.amt);
+        //update user totalexpenses
+        await user.save({ transaction: t });
+        await t.commit();
+        res.status(200).json("Expense get deleted successfully");
+    }
+    catch (err) {
+        await t.rollback();
         console.log(`${err} in deleteExpense`)
         res.status(500).json({
             message: "not able to delete expense"
         });
-    });
-
+    };
 }
 
 exports.editExpense = (req, res, next) => {
