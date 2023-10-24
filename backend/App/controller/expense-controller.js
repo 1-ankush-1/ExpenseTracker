@@ -44,7 +44,7 @@ exports.addExpense = (req, res, next) => {
         User.findByPk(userId),
         Expense.create(expense)
     ]).then(([user, expense]) => {
-        user.totalexpenses += amt;
+        user.totalexpenses += parseFloat(amt);
         user.save();
         return res.status(200).json({ message: "Expense added successfully", data: expense });
     }).catch(err => {
@@ -65,20 +65,34 @@ exports.deleteExpense = (req, res, next) => {
             message: "missing expense id"
         });
     }
-
-    Expense.destroy({
+    
+    //find expense to get amt remove the amt from total expense
+    Expense.findOne({
         where: {
             id: id,
             userId: userId
         }
-    }).then(() => {
-        res.status(200).json("Expense get deleted successfully");
+    }).then((expense) => {
+        Promise.all([
+            User.findByPk(userId),
+            Expense.destroy({
+                where: {
+                    id: id,
+                    userId: userId
+                }
+            })
+        ]).then(([user,]) => {
+            user.totalexpenses -= parseFloat(expense.amt);
+            user.save();
+            return res.status(200).json("Expense get deleted successfully");
+        }).catch(err => { throw new Error(err); })
     }).catch(err => {
         console.log(`${err} in deleteExpense`)
         res.status(500).json({
             message: "not able to delete expense"
         });
     });
+
 }
 
 exports.editExpense = (req, res, next) => {
