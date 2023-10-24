@@ -25,9 +25,11 @@ sequelize.sync().then(() => {
     console.log(`${err} occured whne syncing with sequalize`)
 });
 
+
 /**
  * start server
 */
 app.listen(process.env.port || 3000, () => {
     console.log(`server is running on http://localhost:${process.env.port || 3000}/`)
 })
+

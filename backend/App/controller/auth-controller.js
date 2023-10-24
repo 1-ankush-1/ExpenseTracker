@@ -1,6 +1,7 @@
 const { User } = require("../model/index.js")
 const bcrypt = require("bcrypt");
 const { generateToken } = require("../util/generate-token.js");
+const sendMail = require("../util/send-Mail.js");
 
 exports.signup = (req, res, next) => {
     const { name, email, phone, password } = req.body;
@@ -104,6 +105,17 @@ exports.login = (req, res, next) => {
     })
 }
 
-exports.forgotPassword = (req, res, next) => {
-    res.status(200).send("forget");
+exports.forgotPassword = async (req, res, next) => {
+    const { email } = req.body;
+    const mailDetails = await sendMail(email);
+    console.log(mailDetails);
+    if (mailDetails) {
+        return res.status(200).send({
+            message: "mail successfully sended",
+            data: mailDetails
+        });
+    }
+    res.status(500).json({
+        message: "failed to send mail"
+    })
 }
