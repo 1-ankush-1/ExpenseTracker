@@ -6,5 +6,6 @@ router.get("/", expenseController.getAllExpense);
 router.post("/add", expenseController.addExpense);
 router.delete("/delete/:id", expenseController.deleteExpense);
 router.put("/edit/:id", expenseController.editExpense);
+router.get("/file/download", expenseController.downloadFile);
 
 module.exports = router;
