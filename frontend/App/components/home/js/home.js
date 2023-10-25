@@ -9,6 +9,7 @@ async function onloadData() {
         if (userInfo.ispremiumuser) {
             document.getElementById("Premium").removeAttribute("hidden");
             document.getElementById("openleaderboard").removeAttribute("hidden");
+            document.getElementById("gotoIncomeNExpense").removeAttribute("hidden");
             buyPremium.setAttribute("hidden", "");
         }
         //get data
@@ -262,6 +263,7 @@ function toRazorPay(e) {
                         document.getElementById("Premium").removeAttribute("hidden");
                         buyPremium.setAttribute("hidden", "");
                         document.getElementById("openleaderboard").removeAttribute("hidden");
+                        document.getElementById("gotoIncomeNExpense").removeAttribute("hidden");
                     }).catch(err => {
                         console.log(err);
                         alert(err.response.data.message);
@@ -312,6 +314,7 @@ const logout = document.getElementById("logout").addEventListener("click", (e) =
 })
 const buyPremium = document.getElementById("buy_premium");
 const openleaderboard = document.getElementById("openleaderboard")
+const gotoIncomeNExpense = document.getElementById("gotoIncomeNExpense")
 const DisplaySide = document.getElementById("DisplaySide");
 const expensetable = document.getElementById("expensetable");
 const leaderboardtable = document.getElementById("leaderboardtable");
@@ -321,3 +324,7 @@ tbody.addEventListener("click", deleteNEditExpense);
 form.addEventListener("submit", addExpense);
 buyPremium.addEventListener("click", toRazorPay);
 openleaderboard.addEventListener("click", leaderBoardHandler);
+gotoIncomeNExpense.addEventListener("click", (e) => {
+    e.preventDefault();
+    window.location.href = "../html/incomeNexpense.html";
+});
