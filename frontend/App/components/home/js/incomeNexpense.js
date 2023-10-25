@@ -38,7 +38,13 @@ window.addEventListener("DOMContentLoaded", onloadData);
 const chooseFile = document.getElementById("chooseFile")
 chooseFile.addEventListener("change", (e) => {
     e.preventDefault();
-    console.log(chooseFile.value)
+    if (chooseFile.value = "day") {
+        
+    } else if (chooseFile.value = "month") {
+
+    } else {
+
+    }
 })
 
 //events listners
