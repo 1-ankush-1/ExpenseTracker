@@ -11,7 +11,9 @@ function forgotPassword(e) {
     console.log(user);
 
     axios.post("http://localhost:3000/auth/password/forgotpassword", user).then((res) => {
-        console.log(res);
+        if (res.status === 200) {
+            alert("check you mail successfully sended")
+        }
     }).catch(err => {
         console.log(err);
         alert(err.response.data.message)

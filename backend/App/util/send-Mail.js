@@ -1,6 +1,6 @@
 let Sib = require('sib-api-v3-sdk');
 
-function sendMail(email) {
+function sendMail({ id, receiver }) {
 
     //creating client 
     let client = Sib.ApiClient.instance;
@@ -9,8 +9,6 @@ function sendMail(email) {
     let apiKey = client.authentications['api-key'];
 
     apiKey.apiKey = process.env.MAIL_KEY;
-
-    console.log(process.env.MAIL_KEY, process.env.SENDER_MAIL); // log environment variables
 
     //to send to one person
     let TranEmailAPi = new Sib.TransactionalEmailsApi();
@@ -22,16 +20,24 @@ function sendMail(email) {
     //list of receivers
     const receivers = [
         {
-            email: email
+            email: receiver
         },
     ]
+
 
     //sending mail
     return TranEmailAPi.sendTransacEmail({
         sender,
         to: receivers,
-        subject: "first mail",
-        textContent: "some message"
+        subject: "Reset Password link",
+        htmlContent: `
+        <p>This is your link to reset your password. Here are the steps:</p>
+        <ol>
+            <li>Click on the <a href="http://localhost:3000/auth/password/resetpassword/${id}">link</a></li>
+            <li>Enter your new password</li>
+            <li>Hit save</li>
+        </ol>
+    `
     }).then(result => {
         return result.messageId;
     }).catch(err => console.error(err.reponse.message))

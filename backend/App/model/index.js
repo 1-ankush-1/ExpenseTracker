@@ -1,6 +1,7 @@
 const User = require('./user.js');
 const Expense = require('./expense.js');
 const Order = require('./order.js');
+const ForgotPasswordRequest = require("./forgot-password.js");
 
 //Association One to Many 
 User.hasMany(Expense);
@@ -10,4 +11,8 @@ Expense.belongsTo(User);
 User.hasMany(Order);
 Order.belongsTo(User);
 
-module.exports = { User, Expense, Order };
+//Association One to Many
+User.hasMany(ForgotPasswordRequest);
+ForgotPasswordRequest.belongsTo(User);
+
+module.exports = { User, Expense, Order, ForgotPasswordRequest };
