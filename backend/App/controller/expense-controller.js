@@ -1,42 +1,24 @@
 const sequelize = require("../config/connect.js");
 const { Expense, User } = require("../model/index.js");
-const AWS = require("aws-sdk");
-
-function uploadToS3(data, filename) {
-    const BUCKET_NAME = process.env.BUCKET_NAME;
-    const IAM_USER_KEY = process.env.IAM_USER_KEY;
-    const IAM_USER_SECRET = process.env.IAM_USER_SECRET;
-
-    let s3bucket = new AWS.S3({
-        accessKeyId: IAM_USER_KEY,
-        secretAccessKey: IAM_USER_SECRET,
-    })
-
-    s3bucket.createBucket(() => {
-        let params = {
-            Bucket: BUCKET_NAME,
-            Key: filename,
-            Body: data
-        }
-        s3bucket.upload(params, (err, result) => {
-            if (err) {
-                console.log(`${err} in s3`);
-            } else {
-                console.log("success", result);
-            }
-        });
-    })
-
-}
+const { uploadToS3 } = require("../services/s3-services.js");
 
 exports.downloadFile = async (req, res, next) => {
-    const expenses = await Expense.findAll();
-    res.send(expenses);
-    const stringifyExpense = JSON.stringify(expenses);
-    const filename = "Expense.txt";
+    try {
+        const expenses = await Expense.findAll();
+        const stringifyExpense = JSON.stringify(expenses);
+        const foldername = "expenses/"
+        const filename = "Expense";
+        const date = new Date();
+        const userId = req.userId;
+        const path = `${foldername}${userId}/${filename}-${date}.txt`
 
-    const fileURL = uploadToS3(stringifyExpense, filename);
-    // res.status(200).json({ fileURL, Message: "successfully added to s3" });
+        const fileURL = await uploadToS3(stringifyExpense, path);
+        console.log(fileURL);
+        return res.status(200).json({ data: fileURL, Message: "successfully added to s3" });
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({ Message: "failed to upload" });
+    }
 }
 
 exports.getAllExpense = (req, res, next) => {
