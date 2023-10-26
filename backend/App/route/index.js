@@ -5,9 +5,11 @@ const authRoutes = require("./auth-routes.js");
 const expenseRoutes = require("./expense-routes.js");
 const purchaseRoutes = require("./purchase-routes.js");
 const premiumRoutes = require("./premium-routes.js");
+const incomeRoutes = require("./income-route.js");
 
 router.use("/auth", authRoutes);
 router.use("/expense", Authentication, expenseRoutes);
+router.use("/income", Authentication, incomeRoutes);
 router.use("/purchase", Authentication, purchaseRoutes);
 router.use("/premium", Authentication, premiumRoutes);
 

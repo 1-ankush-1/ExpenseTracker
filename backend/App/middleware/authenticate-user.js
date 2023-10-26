@@ -4,7 +4,7 @@ const { User } = require("../model/index.js");
 const Authentication = (req, res, next) => {
     try {
         let token = req.header("Authorization")
-        token = token.split(' ')[1]
+        // token = token.split(' ')[1]
         console.log(token)
         
         // console.log(token);
