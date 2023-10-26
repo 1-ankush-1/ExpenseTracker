@@ -1,32 +1,32 @@
 const sequelize = require("../config/connect.js");
 const { Income, User } = require("../model/index.js");
+const incomeService = require("../services/income-services.js")
 
-exports.getAllIncome = (req, res, next) => {
-    //cred
-    const userId = req.userId;
+exports.getAllIncome = async (req, res, next) => {
+    try {
+        //cred
+        const userId = req.userId;
 
-    //check for empty
-    if (!userId) {
-        res.status(404).json({
-            message: "missing user id"
-        });
-    }
-
-    Income.findAll({
-        where: {
-            userId: userId
+        //check for empty
+        if (!userId) {
+            res.status(404).json({
+                message: "missing user id"
+            });
         }
-    }).then(incomes => {
+
+        const allincomes = await incomeService.getAllIncomes(userId);
+
         res.status(200).json({
             message: "Successfully fetched incomes",
-            data: incomes
+            data: allincomes
         });
-    }).catch(err => {
+
+    } catch (err) {
         console.log(`${err} in getAllincome`);
         res.status(500).json({
             message: "An error occurred while fetching incomes"
         });
-    });
+    }
 }
 
 exports.addIncome = async (req, res, next) => {

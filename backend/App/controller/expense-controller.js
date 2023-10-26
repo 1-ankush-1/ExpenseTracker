@@ -1,4 +1,5 @@
 const sequelize = require("../config/connect.js");
+const expenseService = require("../services/expense-services.js")
 const { Expense, User } = require("../model/index.js");
 const { uploadToS3 } = require("../services/s3-services.js");
 
@@ -21,32 +22,30 @@ exports.downloadFile = async (req, res, next) => {
     }
 }
 
-exports.getAllExpense = (req, res, next) => {
-    //cred
-    const userId = req.userId;
+exports.getAllExpense = async (req, res, next) => {
+    try {
+        //cred
+        const userId = req.userId;
 
-    //check for empty
-    if (!userId) {
-        res.status(404).json({
-            message: "missing user id"
-        });
-    }
-
-    Expense.findAll({
-        where: {
-            userId: userId
+        //check for empty
+        if (!userId) {
+            res.status(404).json({
+                message: "missing user id"
+            });
         }
-    }).then(expenses => {
+
+        const allExpenses = await expenseService.getAllExpenses(userId);
         res.status(200).json({
             message: "Successfully fetched expenses",
-            data: expenses
+            data: allExpenses
         });
-    }).catch(err => {
+
+    } catch (err) {
         console.log(`${err} in getAllExpense`);
         res.status(500).json({
             message: "An error occurred while fetching expenses"
         });
-    });
+    }
 }
 
 exports.addExpense = async (req, res, next) => {
