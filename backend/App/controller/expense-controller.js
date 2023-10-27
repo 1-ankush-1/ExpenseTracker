@@ -145,3 +145,30 @@ exports.editExpense = (req, res, next) => {
         });
 }
 
+exports.getExpenseRange = async (req, res, next) => {
+    try {
+        let pageLimits = 2;
+
+        let { page } = req.query;
+        page = page ?? 1;       //if page is undefined assign 1
+
+        let totalExpenses = await Expense.count();      //get no of expense
+
+        let expenses = await Expense.findAll({          //get data with limit
+            offset: (page - 1) * pageLimits,
+            limit: pageLimits
+        })
+
+        res.status(200).json({
+            expenses,
+            currrentPage: page,
+            hasNextPage: pageLimits * page < totalExpenses,
+            nextPage: page + 1,
+            hasPreviousPage: page > 1,
+            previousPage: page - 1,
+            lastPage: Math.ceil(totalExpenses / pageLimits)
+        })
+    } catch (err) {
+        console.log(`${err} in getExpenseRange`)
+    }
+}
