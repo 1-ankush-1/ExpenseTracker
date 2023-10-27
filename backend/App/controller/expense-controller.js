@@ -163,7 +163,7 @@ exports.getExpenseRange = async (req, res, next) => {
             expenses,
             currrentPage: page,
             hasNextPage: pageLimits * page < totalExpenses,
-            nextPage: page + 1,
+            nextPage: parseInt(page) + 1,
             hasPreviousPage: page > 1,
             previousPage: page - 1,
             lastPage: Math.ceil(totalExpenses / pageLimits)

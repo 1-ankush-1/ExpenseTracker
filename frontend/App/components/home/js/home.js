@@ -12,24 +12,8 @@ async function onloadData() {
             document.getElementById("gotoIncomeNExpense").removeAttribute("hidden");
             buyPremium.setAttribute("hidden", "");
         }
-        //get data
-        const expenses = await axios.get(`http://localhost:3000/expense`, {
-            headers: {
-                Authorization: usertoken
-            }
-        });
-
-        //check if data is empty
-        if (expenses.data.data.length <= 0) {
-            return;
-        }
-        //setting data in localstorage
-        localStorage.setItem("expenses", JSON.stringify(expenses.data.data));
-
-        //adding data in table
-        for (let e of expenses.data.data) {
-            createRow(e)
-        }
+        //default page 1
+        expensePagination(1);
     } catch (err) {
         console.log(err);
         if (err.response && (err.response.status === 404 || err.response.status === 500)) {
@@ -42,6 +26,80 @@ async function onloadData() {
 //onload - fetch from server
 window.addEventListener("DOMContentLoaded", onloadData);
 
+async function expensePagination(pageno) {
+    const expensesData = await axios.get(`http://localhost:3000/expense/get?page=${pageno}`, {
+        headers: {
+            Authorization: usertoken
+        }
+    });
+    const { expenses, ...pageControllers } = expensesData.data
+    showExpense(expenses);
+    showPageControllers(pageControllers);
+}
+
+function showExpense(expenses) {
+    //setting data in localstorage
+    localStorage.setItem("expenses", JSON.stringify(expenses));
+
+    while (tbody.children[0]) {
+        tbody.removeChild(tbody.children[0]);
+    }
+
+    //adding data in table
+    for (let e of expenses) {
+        createRow(e)
+    }
+}
+
+function showPageControllers(pageControllers) {
+
+    const div = document.getElementById("paginationController");
+    //clear
+    while (div.children[0]) {
+        div.removeChild(div.children[0])
+    }
+
+    // Previous button
+    if (pageControllers.hasPreviousPage) {
+        const prevBtn = document.createElement("button");
+        prevBtn.textContent = "Prev";
+        prevBtn.classList.add('page-link'); // Add Bootstrap page-link class
+        const prevItem = document.createElement("li");
+        prevItem.classList.add('page-item'); // Add Bootstrap page-item class
+        prevItem.appendChild(prevBtn);
+        div.append(prevItem);
+        prevItem.addEventListener("click", () => expensePagination(parseInt(pageControllers.currrentPage) - 1))
+    }
+
+    // Page number buttons
+    for (let i = 1; i <= Math.min(pageControllers.lastPage, 5); i++) { //  5 page 
+        const pageBtn = document.createElement("button");
+        pageBtn.textContent = i;
+        pageBtn.classList.add('page-link');
+        const pageItem = document.createElement("li");
+        pageItem.classList.add('page-item');
+        if (i === pageControllers.currrentPage) {
+            pageItem.classList.add('active');   // Highlight the current page 
+        }
+        pageItem.appendChild(pageBtn);
+        div.append(pageItem);
+        pageItem.addEventListener("click", () => expensePagination(i))
+    }
+
+    // Next button
+    if (pageControllers.hasNextPage) {
+        const nextBtn = document.createElement("button");
+        nextBtn.textContent = "Next";
+        nextBtn.classList.add('page-link');
+        const nextItem = document.createElement("li");
+        nextItem.classList.add('page-item');
+        nextItem.appendChild(nextBtn);
+        div.append(nextItem);
+        nextItem.addEventListener("click", () => expensePagination(parseInt(pageControllers.currrentPage) + 1))
+    }
+
+    DisplaySide.appendChild(div);
+}
 
 function addExpense(e) {
     e.preventDefault();
@@ -178,12 +236,17 @@ function removeChild(row) {
 
 function leaderBoardHandler(e) {
     e.preventDefault();
+    const div = document.getElementById("paginationController");
+    //clear
+
     if (e.target.textContent.includes("LeaderBoard")) {
+        div.setAttribute("hidden", "");
         leaderboardtable.removeAttribute("hidden");
         expensetable.setAttribute("hidden", "");
         e.target.textContent = "My Expense";
         fetchLeaderBoardResult();
     } else if (e.target.textContent.includes("My Expense")) {
+        div.removeAttribute("hidden", "");
         expensetable.removeAttribute("hidden");
         leaderboardtable.setAttribute("hidden", "");
         e.target.textContent = "LeaderBoard"
