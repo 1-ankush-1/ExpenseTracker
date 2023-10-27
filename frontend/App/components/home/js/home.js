@@ -1,5 +1,6 @@
 const userInfo = JSON.parse(localStorage.getItem("userInfo"));
 const usertoken = localStorage.getItem("token");
+
 async function onloadData() {
     try {
         if (!usertoken) {
@@ -27,7 +28,8 @@ async function onloadData() {
 window.addEventListener("DOMContentLoaded", onloadData);
 
 async function expensePagination(pageno) {
-    const expensesData = await axios.get(`http://localhost:3000/expense/get?page=${pageno}`, {
+    const rowperpage = localStorage.getItem("rowperpage");
+    const expensesData = await axios.get(`http://localhost:3000/expense/get?page=${pageno}&rowperpage=${rowperpage}`, {
         headers: {
             Authorization: usertoken
         }
@@ -54,6 +56,7 @@ function showExpense(expenses) {
 function showPageControllers(pageControllers) {
 
     const div = document.getElementById("paginationController");
+    const rowperpage = localStorage.getItem("rowperpage");
     //clear
     while (div.children[0]) {
         div.removeChild(div.children[0])
@@ -99,6 +102,15 @@ function showPageControllers(pageControllers) {
     }
 
     DisplaySide.appendChild(div);
+}
+
+//no of rows to show
+document.getElementById("noOfExpenseSelection").addEventListener("change", selectNoOfExpenses);
+function selectNoOfExpenses(e) {
+    e.preventDefault();
+    localStorage.setItem("rowperpage", e.target.value);
+    console.log(e.target.value)
+    expensePagination();
 }
 
 function addExpense(e) {
@@ -237,7 +249,6 @@ function removeChild(row) {
 function leaderBoardHandler(e) {
     e.preventDefault();
     const div = document.getElementById("paginationController");
-    //clear
 
     if (e.target.textContent.includes("LeaderBoard")) {
         div.setAttribute("hidden", "");

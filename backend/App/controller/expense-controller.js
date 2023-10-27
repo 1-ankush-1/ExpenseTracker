@@ -147,9 +147,8 @@ exports.editExpense = (req, res, next) => {
 
 exports.getExpenseRange = async (req, res, next) => {
     try {
-        let pageLimits = 2;
-
-        let { page } = req.query;
+        let { page, rowperpage } = req.query;
+        let pageLimits = parseInt(rowperpage) ?? 5;
         page = page ?? 1;       //if page is undefined assign 1
 
         let totalExpenses = await Expense.count();      //get no of expense
