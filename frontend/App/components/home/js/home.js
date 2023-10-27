@@ -328,3 +328,7 @@ gotoIncomeNExpense.addEventListener("click", (e) => {
     e.preventDefault();
     window.location.href = "../html/incomeNexpense.html";
 });
+gotoIncome.addEventListener('click', (e) => {
+    e.preventDefault();
+    window.location.href = "../html/income.html";
+})

@@ -30,8 +30,8 @@
           <img
             src="../../../public/expenses.png"
             alt="Logo"
-            width="50"
-            height="50"
+            width="40"
+            height="40"
             class="opacity-50"
           />
         </a>
@@ -44,41 +44,56 @@
     </nav>
     <div class="container mt-2">
       <div class="row">
-        <div class="overflow-auto mt-2" id="DisplaySide">
+        <div class="overflow-auto mt-2" id="DisplayBody">
           <div>
             <div class="m-3 float-end">
               <button class="btn btn-success" type="button" id="dwnldFile">
                 Download
               </button>
             </div>
+            <!--Time-->
             <div
               class="m-3 float-start form-inline d-flex gap-2 align-items-center"
+              id="parentTime"
             >
-              <label for="chooseFile" class="form-label w-100 fw-bold"
-                >Time
-              </label>
-              <select class="form-control form-select" id="chooseFile">
+              <label for="chooseFile" class="form-label fw-bold">Time</label>
+              <select
+                class="form-control form-select"
+                id="chooseTime"
+                style="width: 100px"
+              >
                 <option value="day">Day</option>
                 <option value="month">Month</option>
                 <option value="year">Year</option>
               </select>
             </div>
           </div>
-          <!--user expense-->
-          <table class="table table-striped table-hover" id="yearTable">
+          <!--Year-->
+          <table class="table table-striped table-hover" id="dayTable" hidden>
             <thead class="table-danger">
               <tr>
-                <td>Date</td>
                 <td>Description</td>
                 <td>Catogary</td>
                 <td>Income</td>
                 <td>Expenses</td>
               </tr>
             </thead>
-            <tbody class="table-group-divider" id="yeartablebody"></tbody>
+            <tbody class="table-group-divider" id="daytablebody"></tbody>
           </table>
-          <!--leaderboard-->
-          <table class="table table-striped table-hover" id="monthTable">
+          <!--Month-->
+          <table class="table table-striped table-hover" id="monthTable" hidden>
+            <thead class="table-danger">
+              <tr>
+                <td>Date</td>
+                <td>Income</td>
+                <td>Expense</td>
+                <td>Saving</td>
+              </tr>
+            </thead>
+            <tbody class="table-group-divider" id="monthtablebody"></tbody>
+          </table>
+          <!--Day-->
+          <table class="table table-striped table-hover" id="yearTable" hidden>
             <thead class="table-danger">
               <tr>
                 <td>Month</td>
@@ -87,16 +102,7 @@
                 <td>Saving</td>
               </tr>
             </thead>
-            <tbody class="table-group-divider" id="monthtablebody"></tbody>
-          </table>
-          <table class="table table-striped table-hover" id="dayTable">
-            <thead class="table-danger">
-              <tr>
-                <td>Date</td>
-                <td>Notes</td>
-              </tr>
-            </thead>
-            <tbody class="table-group-divider" id="daytablebody"></tbody>
+            <tbody class="table-group-divider" id="yeartablebody"></tbody>
           </table>
         </div>
       </div>
