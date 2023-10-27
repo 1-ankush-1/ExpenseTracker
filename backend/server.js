@@ -1,14 +1,24 @@
 const express = require("express");
+const fs = require("fs");
 const bodyparser = require("body-parser");
 const cors = require("cors");
 const Router = require("./App/route/index.js")
 const sequelize = require("./App/config/connect.js");
+const helmet = require("helmet");
+// const compression = require("compression");
+const morgan = require("morgan");
+const path = require("path");
 
 const app = express();
-
+const accessLogStream = fs.WriteStream(path.join(__dirname, 'access.log'), {
+    flag: 'a'
+});
 /**
  * Middleware
  */
+app.use(helmet());
+// app.use(compression());
+app.use(morgan('combined', { stream: accessLogStream }));
 app.use(cors());
 app.use(bodyparser.json({ extended: false }));
 
