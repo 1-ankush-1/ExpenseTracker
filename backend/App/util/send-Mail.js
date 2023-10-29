@@ -33,7 +33,7 @@ function sendMail({ id, receiver }) {
         htmlContent: `
         <p>This is your link to reset your password. Here are the steps:</p>
         <ol>
-            <li>Click on the <a href="http://localhost:3000/auth/password/resetpassword/${id}">link</a></li>
+            <li>Click on the <a href="${process.env.DOMAIN}/auth/password/resetpassword/${id}">link</a></li>
             <li>Enter your new password</li>
             <li>Hit save</li>
         </ol>
