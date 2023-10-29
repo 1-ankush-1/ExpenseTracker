@@ -4,12 +4,13 @@ const bodyparser = require("body-parser");
 const cors = require("cors");
 const Router = require("./App/route/index.js")
 const sequelize = require("./App/config/connect.js");
-// const helmet = require("helmet");
-// const compression = require("compression");
+const helmet = require("helmet");
+const compression = require("compression");
 const morgan = require("morgan");
 const path = require("path");
 
 const app = express();
+app.use(express.static('public'));
 const accessLogStream = fs.WriteStream(path.join(__dirname, 'access.log'), {
     flag: 'a'
 });
@@ -17,7 +18,7 @@ const accessLogStream = fs.WriteStream(path.join(__dirname, 'access.log'), {
  * Middleware
  */
 // app.use(helmet());
-// app.use(compression());
+app.use(compression());
 app.use(morgan('combined', { stream: accessLogStream }));
 app.use(cors());
 app.use(bodyparser.json({ extended: false }));
