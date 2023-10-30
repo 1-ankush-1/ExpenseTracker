@@ -338,12 +338,9 @@ function toRazorPay(e) {
                         buyPremium.setAttribute("hidden", "");
                         document.getElementById("openleaderboard").removeAttribute("hidden");
                         document.getElementById("gotoIncomeNExpense").removeAttribute("hidden");
-                        document.getElementById("logout").addEventListener("click", (e) => {
-                            e.preventDefault();
-                            localStorage.removeItem("userInfo");
-                            localStorage.removeItem("token");
-                            window.location.href = "../../login/html/login.html";
-                        })
+                        localStorage.removeItem("userInfo");
+                        localStorage.removeItem("token");
+                        window.location.href = "../../login/html/login.html";
                     }).catch(err => {
                         console.log(err);
                         alert(err.response.data.message);
