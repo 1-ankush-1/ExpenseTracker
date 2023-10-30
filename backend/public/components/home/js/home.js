@@ -333,17 +333,11 @@ function toRazorPay(e) {
                             Authorization: usertoken
                         }
                     }).then(() => {
-                        alert("premium user now login again")
+                        alert("you are a premium user now")
                         document.getElementById("Premium").removeAttribute("hidden");
                         buyPremium.setAttribute("hidden", "");
                         document.getElementById("openleaderboard").removeAttribute("hidden");
                         document.getElementById("gotoIncomeNExpense").removeAttribute("hidden");
-                        document.getElementById("logout").addEventListener("click", (e) => {
-                            e.preventDefault();
-                            localStorage.removeItem("userInfo");
-                            localStorage.removeItem("token");
-                            window.location.href = "../../login/html/login.html";
-                        })
                     }).catch(err => {
                         console.log(err);
                         alert(err.response.data.message);
