@@ -147,13 +147,25 @@ exports.editExpense = (req, res, next) => {
 
 exports.getExpenseRange = async (req, res, next) => {
     try {
+        const userId = req.userId;
         let { page, rowperpage } = req.query;
         let pageLimits = parseInt(rowperpage) || 5;
         page = parseInt(page) || 1;       //if page is undefined assign 1
 
+        //check for empty
+        if (!userId) {
+            res.status(404).json({
+                message: "missing user id"
+            });
+        }
+
         let totalExpenses = await Expense.count();      //get no of expense
 
-        let expenses = await Expense.findAll({          //get data with limit
+        let expenses = await Expense.findAll({
+            where: {
+                userId
+            }
+        }, {          //get data with limit
             offset: (page - 1) * pageLimits,
             limit: pageLimits
         })
