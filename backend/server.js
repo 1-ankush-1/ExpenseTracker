@@ -2,12 +2,12 @@ const express = require("express");
 const fs = require("fs");
 const bodyparser = require("body-parser");
 const cors = require("cors");
-const Router = require("./App/route/index.js")
-const sequelize = require("./App/config/connect.js");
-const helmet = require("helmet");
+const Router = require("./App/routes/index.js")
+// const helmet = require("helmet");
 const compression = require("compression");
 const morgan = require("morgan");
 const path = require("path");
+const dbConnect = require("./App/config/connect.js")
 
 const app = express();
 app.use(express.static('public'));
@@ -29,18 +29,11 @@ app.use(bodyparser.json({ extended: false }));
 app.use(Router);
 
 /**
- * sync with database
+ * connect To DB and start server
  */
-sequelize.sync().then(() => {
-}).catch(err => {
-    console.log(`${err} occured whne syncing with sequalize`)
+dbConnect((result) => {
+    app.listen(process.env.port || 3000, () => {
+        console.log(`server is running on http://localhost:${process.env.port || 3000}/`)
+    })
 });
-
-
-/**
- * start server
-*/
-app.listen(process.env.port || 3000, () => {
-    console.log(`server is running on http://localhost:${process.env.port || 3000}/`)
-})
 

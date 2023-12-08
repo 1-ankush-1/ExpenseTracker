@@ -1,10 +1,10 @@
-const DBconfig = require("../util/dbconfig");
-const Sequelize = require("sequelize");
+const mongoose = require("mongoose");
 
-const sequelize = new Sequelize(DBconfig.database, DBconfig.user,
-    DBconfig.password, {
-    host: DBconfig.host,
-    dialect: DBconfig.dialect,
-});
+function dbConnect(callback) {
+    mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_CLUSTER}.0cghwlb.mongodb.net/`).then(result => {
+        callback(result);
+    }).catch(err => console.log("c"))
+}
 
-module.exports = sequelize;
+module.exports = dbConnect;
+
