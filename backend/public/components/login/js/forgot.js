@@ -10,7 +10,7 @@ function forgotPassword(e) {
     }
     console.log(user);
 
-    axios.post("http://34.204.107.19/auth/password/forgotpassword", user).then((res) => {
+    axios.post("http://localhost:3000/auth/password/forgetpassword", user).then((res) => {
         if (res.status === 200) {
             alert("check you mail successfully sended")
         }
