@@ -160,11 +160,11 @@ exports.getExpenseRange = async (req, res, next) => {
         }
 
         const [totalExpenses, expenses] = await Promise.all([
-            Expense.estimatedDocumentCount({ userId }),         //get no of expense
+            Expense.countDocuments({ userId }),         //get no of expense
             Expense.find({ userId }).limit(pageLimits).skip((page - 1) * pageLimits).lean()
         ])
         // console.log(pageLimits, " --->", (page - 1) * pageLimits)
-        // console.log(totalExpenses, expenses);
+        console.log(totalExpenses, expenses);
 
         // console.log(expenses)
         res.status(200).json({
