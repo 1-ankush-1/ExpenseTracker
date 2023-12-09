@@ -1,7 +1,7 @@
-const { Income } = require("../model");
+const Income = require("../models/income.js");
 
 exports.getAllIncomes = async (userId) => {
-    return Income.findAll({
-        where: { userId }
+    return Income.find({
+        userId
     })
 }

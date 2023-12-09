@@ -19,11 +19,13 @@ async function onloadData() {
         console.log("in")
 
         //get data
-        const incomes = await axios.get(`http://34.204.107.19/income`, {
+        const incomes = await axios.get(`http://localhost:3000/income`, {
             headers: {
                 Authorization: usertoken
             }
         });
+
+        console.log(incomes);
 
         //check if data is empty
         if (incomes.data.data.length <= 0) {
@@ -68,7 +70,7 @@ function AddIncomeForm(e) {
         incomeDataTosend[name] = value;
     }
 
-    axios.post("http://34.204.107.19/income/add", incomeDataTosend, {
+    axios.post("http://localhost:3000/income/add", incomeDataTosend, {
         headers: {
             Authorization: usertoken
         }
@@ -105,7 +107,7 @@ function createRow(data) {
 
     //td
     const amt = document.createElement("td");
-    amt.textContent = data.amt;
+    amt.textContent = data.amt.$numberDecimal;
     amt.setAttribute("style", "--bs-table-bg-type: white !important;");
     const desc = document.createElement("td");
     desc.textContent = data.desc;
@@ -124,7 +126,7 @@ function createRow(data) {
     row.appendChild(desc);
     row.append(operations);
     const tbody = document.getElementById("tablebody");
-    row.id = data.id;
+    row.id = data._id;
     //add row in body
     tbody.appendChild(row);
 }
@@ -149,7 +151,7 @@ function deleteincome(e) {
 
 function removeChild(row) {
     //delete item from server and localstorage
-    axios.delete(`http://34.204.107.19/income/delete/${row.id}`, {
+    axios.delete(`http://localhost:3000/income/delete/${row.id}`, {
         headers: {
             Authorization: usertoken
         }
