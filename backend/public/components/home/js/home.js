@@ -29,7 +29,7 @@ window.addEventListener("DOMContentLoaded", onloadData);
 
 async function expensePagination(pageno) {
     const rowperpage = localStorage.getItem("rowperpage");
-    const expensesData = await axios.get(`http://34.204.107.19/expense/get?page=${pageno}&rowperpage=${rowperpage}`, {
+    const expensesData = await axios.get(`http://localhost:3000/expense/get?page=${pageno}&rowperpage=${rowperpage}`, {
         headers: {
             Authorization: usertoken
         }
@@ -109,7 +109,8 @@ document.getElementById("noOfExpenseSelection").addEventListener("change", selec
 function selectNoOfExpenses(e) {
     e.preventDefault();
     localStorage.setItem("rowperpage", e.target.value);
-    console.log(e.target.value)
+    // console.log(e.target.value)
+    localStorage.setItem("rowperpage", e.target.value);
     expensePagination();
 }
 
@@ -123,7 +124,7 @@ function addExpense(e) {
         expense[name] = value;
     }
 
-    axios.post("http://34.204.107.19/expense/add", expense, {
+    axios.post("http://localhost:3000/expense/add", expense, {
         headers: {
             Authorization: usertoken
         }
@@ -165,7 +166,7 @@ function createRow(data) {
     desc.textContent = data.desc;
     desc.setAttribute("style", "--bs-table-bg-type: white !important;");
     const amt = document.createElement("td");
-    amt.textContent = data.amt;
+    amt.textContent = data.amt.$numberDecimal;
     amt.setAttribute("style", "--bs-table-bg-type: white !important;");
     //buttons container
     let operations = document.createElement('td');
@@ -186,7 +187,7 @@ function createRow(data) {
     row.appendChild(amt);
     row.append(operations);
     const tbody = document.getElementById("tablebody");
-    row.id = data.id;
+    row.id = data._id;
     //add row in body
     tbody.appendChild(row);
 }
@@ -218,7 +219,7 @@ function deleteNEditExpense(e) {
 
 function removeChild(row) {
     //delete item from server and localstorage
-    axios.delete(`http://34.204.107.19/expense/delete/${row.id}`, {
+    axios.delete(`http://localhost:3000/expense/delete/${row.id}`, {
         headers: {
             Authorization: usertoken
         }
@@ -274,7 +275,7 @@ function leaderBoardHtml(user) {
     name.textContent = user.name;
     name.setAttribute("style", "--bs-table-bg-type: white !important;");
     const ttlexpense = document.createElement("td");
-    ttlexpense.textContent = user.totalexpenses ?? 0;
+    ttlexpense.textContent = user.totalexpenses.$numberDecimal ?? 0;
 
     //adding td in row
     row.appendChild(name);
@@ -288,7 +289,7 @@ function leaderBoardHtml(user) {
 }
 
 function fetchLeaderBoardResult() {
-    axios.get(`http://34.204.107.19/premium/leaderboard`, {
+    axios.get(`http://localhost:3000/premium/leaderboard`, {
         headers: {
             Authorization: usertoken
         }
@@ -311,7 +312,7 @@ function fetchLeaderBoardResult() {
 
 function toRazorPay(e) {
     e.preventDefault();
-    axios.get(`http://34.204.107.19/purchase/buypremium`, {
+    axios.get(`http://localhost:3000/purchase/buypremium`, {
         headers: {
             Authorization: usertoken
         }
@@ -325,7 +326,7 @@ function toRazorPay(e) {
                 //this will handel the response after the payment(update the order table)
                 "handler": (result) => {
                     console.log(result);
-                    axios.post(`http://34.204.107.19/purchase/updatetransactionstatus`, {
+                    axios.post(`http://localhost:3000/purchase/updatetransactionstatus`, {
                         order_id: options.order_id,
                         payment_id: result.razorpay_payment_id
                     }, {
@@ -357,7 +358,7 @@ function toRazorPay(e) {
             payrazor.on('payment.failed', (response) => {
                 // console.log(response);
                 console.log(response);
-                axios.post(`http://34.204.107.19/purchase/failedtransaction`, {
+                axios.post(`http://localhost:3000/purchase/failedtransaction`, {
                     order_id: response.error.metadata.order_id,
                     payment_id: response.error.metadata.payment_id
                 }, {

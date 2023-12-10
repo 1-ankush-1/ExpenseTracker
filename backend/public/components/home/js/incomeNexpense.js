@@ -136,7 +136,7 @@ async function getDataByDay(e) {
         console.log(dateDetails);
         if (dateDetails.day) {
             timeslot = null;
-            const monthdata = await axios.get(`http://34.204.107.19/premium/report/day/${dateDetails.day}`, {
+            const monthdata = await axios.get(`http://localhost:3000/premium/report/day/${dateDetails.day}`, {
                 headers: {
                     Authorization: usertoken
                 }
@@ -144,7 +144,7 @@ async function getDataByDay(e) {
             console.log(monthdata);
         } else if (dateDetails.month) {
             timeslot = dateDetails.month;
-            const monthdata = await axios.get(`http://34.204.107.19/premium/report/month/${dateDetails.month}`, {
+            const monthdata = await axios.get(`http://localhost:3000/premium/report/month/${dateDetails.month}`, {
                 headers: {
                     Authorization: usertoken
                 }
@@ -178,7 +178,7 @@ async function getDataByDay(e) {
 
         } else if (dateDetails.year) {
             timeslot = dateDetails.year;
-            const yeardata = await axios.get(`http://34.204.107.19/premium/report/year/${dateDetails.year}`, {
+            const yeardata = await axios.get(`http://localhost:3000/premium/report/year/${dateDetails.year}`, {
                 headers: {
                     Authorization: usertoken
                 }
@@ -206,9 +206,9 @@ function createHtmlYear(individual, tbody) {
     const monthtd = document.createElement("td");
     monthtd.textContent = individual.date;
     const incometd = document.createElement("td");
-    incometd.textContent = individual.income;
+    incometd.textContent = individual.income.$numberDecimal;
     const expensetd = document.createElement("td");
-    expensetd.textContent = individual.expense;
+    expensetd.textContent = individual.expense.$numberDecimal;
     const savingstd = document.createElement("td");
     savingstd.textContent = individual.savings;
 
@@ -232,7 +232,7 @@ async function handelDownloadFile(e) {
 
     try {
         if (timespan && timeslot) {
-            const response = await axios.get(`http://34.204.107.19/premium/report/download?filetype=${timespan}&timeslot=${timeslot}`, {
+            const response = await axios.get(`http://localhost:3000/premium/report/download?filetype=${timespan}&timeslot=${timeslot}`, {
                 headers: {
                     Authorization: usertoken
                 }
