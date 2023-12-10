@@ -1,7 +1,7 @@
 const User = require("../models/user.js")
 const File = require("../models/files.js")
-const premiumService = require("../services/premium-services.js");
-const { uploadToS3 } = require("../services/s3-services.js");
+const premiumService = require("../services/premium.js");
+const { uploadToS3 } = require("../services/s3.js");
 
 exports.allLeaderBoardData = async (req, res, next) => {
     try {

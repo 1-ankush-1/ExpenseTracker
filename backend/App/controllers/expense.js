@@ -1,7 +1,7 @@
 const expenseService = require("../services/expense.js")
 const Expense = require("../models/expense.js");
 const User = require("../models/user.js");
-const { uploadToS3 } = require("../services/s3-services.js");
+const { uploadToS3 } = require("../services/s3.js");
 const mongoose = require("mongoose");
 
 exports.downloadFile = async (req, res, next) => {
