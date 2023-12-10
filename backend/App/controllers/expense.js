@@ -15,7 +15,7 @@ exports.downloadFile = async (req, res, next) => {
         const path = `${foldername}${userId}/${filename}-${date}.txt`
 
         const fileURL = await uploadToS3(stringifyExpense, path);
-        console.log(fileURL);
+        // console.log(fileURL);
         return res.status(200).json({ data: fileURL, Message: "successfully added to s3" });
     } catch (err) {
         console.log(err);
@@ -164,7 +164,7 @@ exports.getExpenseRange = async (req, res, next) => {
             Expense.find({ userId }).limit(pageLimits).skip((page - 1) * pageLimits).lean()
         ])
         // console.log(pageLimits, " --->", (page - 1) * pageLimits)
-        console.log(totalExpenses, expenses);
+        // console.log(totalExpenses, expenses);
 
         // console.log(expenses)
         res.status(200).json({

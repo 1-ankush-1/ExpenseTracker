@@ -1,17 +1,10 @@
 const mongoose = require("mongoose");
+
 const Schema = mongoose.Schema;
 
-const expenseSchema = new Schema({
-    catogary: {
+const fileSchema = new Schema({
+    fileurl: {
         type: String,
-        required: true
-    },
-    desc: {
-        type: String,
-        required: true
-    },
-    amt: {
-        type: mongoose.Types.Decimal128,
         required: true
     },
     createdAt: {
@@ -21,9 +14,10 @@ const expenseSchema = new Schema({
     },
     userId: {
         type: mongoose.Types.ObjectId,
-        ref: "User",
+        ref: 'User',                   //referenec to user
         required: true
     }
 })
 
-module.exports = mongoose.model("Expense", expenseSchema);
+
+module.exports = mongoose.model("File", fileSchema);

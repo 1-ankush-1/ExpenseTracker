@@ -12,8 +12,8 @@ const fs = require("fs")
 router.use("/auth", authRoutes);
 router.use("/income", Authentication, incomeRoutes);
 router.use("/expense", Authentication, expenseRoutes);
-// router.use("/purchase", Authentication, purchaseRoutes);
-// router.use("/premium", Authentication, premiumRoutes);
+router.use("/purchase", Authentication, purchaseRoutes);
+router.use("/premium", Authentication, premiumRoutes);
 
 //if no route found
 router.use('/', (req, res, next) => {

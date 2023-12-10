@@ -11,6 +11,11 @@ const orderSchema = new Schema({
     status: {
         type: String
     },
+    createdAt: {
+        type: Date,
+        required: true,
+        default: Date.now
+    },
     userId: {
         type: mongoose.Types.ObjectId,
         ref: 'User',                   //referenec to user
