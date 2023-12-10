@@ -36,4 +36,3 @@ dbConnect((result) => {
         console.log(`server is running on http://localhost:${process.env.port || 3000}/`)
     })
 });
-

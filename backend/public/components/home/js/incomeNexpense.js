@@ -206,9 +206,9 @@ function createHtmlYear(individual, tbody) {
     const monthtd = document.createElement("td");
     monthtd.textContent = individual.date;
     const incometd = document.createElement("td");
-    incometd.textContent = individual.income.$numberDecimal;
+    incometd.textContent = individual.income.$numberDecimal ?? 0;
     const expensetd = document.createElement("td");
-    expensetd.textContent = individual.expense.$numberDecimal;
+    expensetd.textContent = individual.expense.$numberDecimal ?? 0;
     const savingstd = document.createElement("td");
     savingstd.textContent = individual.savings;
 
