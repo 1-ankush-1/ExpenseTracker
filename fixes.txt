@@ -1,0 +1,28 @@
+### Issues in deployed version
+
+- fix the input in the add expense 
+ 	- issue when hits enter it is submitting form
+
+input onKeyDown={ (e) => {
+
+e.key === "Enter" 
+replace(variable, '\n" or <br><br>
+}}
+
+
+// naming conversion should be name 
+// table names should be plural 
+// file name should be singular
+// folder name also should be plural
+
+Learn Migration
+//migration in sequlize
+
+- when you make changes to the model you can migrate to last version of
+
+--Go to prisma and read about migration - https://www.prisma.io/docs
+
+ ---migration hold two things what changes we need to do and  
+revert 
+
+-- seed files(seeding some dummy data) and migration
