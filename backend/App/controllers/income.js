@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const sequelize = require("../config/connect.js");
 const User = require("../models/user.js")
 const Income = require("../models/income.js")
-const incomeService = require("../services/income-services.js")
+const incomeService = require("../services/income.js")
 
 exports.getAllIncome = async (req, res, next) => {
     try {
