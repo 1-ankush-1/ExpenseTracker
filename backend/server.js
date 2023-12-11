@@ -32,7 +32,7 @@ app.use(Router);
  * connect To DB and start server
  */
 dbConnect(() => {
-    app.listen(process.env.port || 3000, () => {
+    app.listen(process.env.PORT || 3000, () => {
         console.log(`server is running on http://localhost:${process.env.port || 3000}/`)
     })
 });
