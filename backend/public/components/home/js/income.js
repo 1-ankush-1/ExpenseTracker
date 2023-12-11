@@ -19,7 +19,7 @@ async function onloadData() {
         console.log("in")
 
         //get data
-        const incomes = await axios.get(`34.229.6.78:3000/income`, {
+        const incomes = await axios.get(`http://34.229.6.78:3000/income`, {
             headers: {
                 Authorization: usertoken
             }
@@ -70,7 +70,7 @@ function AddIncomeForm(e) {
         incomeDataTosend[name] = value;
     }
 
-    axios.post("34.229.6.78:3000/income/add", incomeDataTosend, {
+    axios.post("http://34.229.6.78:3000/income/add", incomeDataTosend, {
         headers: {
             Authorization: usertoken
         }
@@ -151,7 +151,7 @@ function deleteincome(e) {
 
 function removeChild(row) {
     //delete item from server and localstorage
-    axios.delete(`34.229.6.78:3000/income/delete/${row.id}`, {
+    axios.delete(`http://34.229.6.78:3000/income/delete/${row.id}`, {
         headers: {
             Authorization: usertoken
         }
