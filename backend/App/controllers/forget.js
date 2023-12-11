@@ -231,7 +231,7 @@ const formBodyHtml = (userId) => {
             let resetid = parts[parts.length - 1];
             
             //add reset id in url
-            const changepass = 'http://localhost:3000/auth/password/updatepassword/'+ resetid 
+            const changepass = '34.229.6.78:3000/auth/password/updatepassword/'+ resetid 
 
             axios.put(changepass, updatedresetdata ).then((result) => {
                     if (result.status === 200) {

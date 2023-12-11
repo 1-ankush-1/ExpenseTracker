@@ -13,7 +13,7 @@ function Login(e) {
         userdata[name] = value;
     }
 
-    axios.post("http://localhost:3000/auth/login", userdata).then((result) => {
+    axios.post("34.229.6.78:3000/auth/login", userdata).then((result) => {
         if (result.status === 200) {
             alert(result.data.message);
             // console.log(result.data.data);

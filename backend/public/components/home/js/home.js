@@ -29,7 +29,7 @@ window.addEventListener("DOMContentLoaded", onloadData);
 
 async function expensePagination(pageno) {
     const rowperpage = localStorage.getItem("rowperpage");
-    const expensesData = await axios.get(`http://localhost:3000/expense/get?page=${pageno}&rowperpage=${rowperpage}`, {
+    const expensesData = await axios.get(`34.229.6.78:3000/expense/get?page=${pageno}&rowperpage=${rowperpage}`, {
         headers: {
             Authorization: usertoken
         }
@@ -124,7 +124,7 @@ function addExpense(e) {
         expense[name] = value;
     }
 
-    axios.post("http://localhost:3000/expense/add", expense, {
+    axios.post("34.229.6.78:3000/expense/add", expense, {
         headers: {
             Authorization: usertoken
         }
@@ -219,7 +219,7 @@ function deleteNEditExpense(e) {
 
 function removeChild(row) {
     //delete item from server and localstorage
-    axios.delete(`http://localhost:3000/expense/delete/${row.id}`, {
+    axios.delete(`34.229.6.78:3000/expense/delete/${row.id}`, {
         headers: {
             Authorization: usertoken
         }
@@ -289,7 +289,7 @@ function leaderBoardHtml(user) {
 }
 
 function fetchLeaderBoardResult() {
-    axios.get(`http://localhost:3000/premium/leaderboard`, {
+    axios.get(`34.229.6.78:3000/premium/leaderboard`, {
         headers: {
             Authorization: usertoken
         }
@@ -312,7 +312,7 @@ function fetchLeaderBoardResult() {
 
 function toRazorPay(e) {
     e.preventDefault();
-    axios.get(`http://localhost:3000/purchase/buypremium`, {
+    axios.get(`34.229.6.78:3000/purchase/buypremium`, {
         headers: {
             Authorization: usertoken
         }
@@ -326,7 +326,7 @@ function toRazorPay(e) {
                 //this will handel the response after the payment(update the order table)
                 "handler": (result) => {
                     console.log(result);
-                    axios.post(`http://localhost:3000/purchase/updatetransactionstatus`, {
+                    axios.post(`34.229.6.78:3000/purchase/updatetransactionstatus`, {
                         order_id: options.order_id,
                         payment_id: result.razorpay_payment_id
                     }, {
@@ -358,7 +358,7 @@ function toRazorPay(e) {
             payrazor.on('payment.failed', (response) => {
                 // console.log(response);
                 console.log(response);
-                axios.post(`http://localhost:3000/purchase/failedtransaction`, {
+                axios.post(`34.229.6.78:3000/purchase/failedtransaction`, {
                     order_id: response.error.metadata.order_id,
                     payment_id: response.error.metadata.payment_id
                 }, {
