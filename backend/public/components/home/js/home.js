@@ -175,7 +175,7 @@ function createRow(data) {
     btndel.className = "btn btn-danger delete";
     btndel.textContent = "Delete";
     let editbtn = document.createElement("button");
-    editbtn.className = "btn btn-primary me-2 edit"
+    editbtn.className = "btn edit-color me-2 edit"
     editbtn.textContent = "Edit";
     //add button in one container
     operations.appendChild(editbtn);

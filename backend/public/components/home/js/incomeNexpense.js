@@ -70,7 +70,7 @@ function handelChooseTime(e) {
         const btn = document.createElement("button");
         btn.type = "submit";
         btn.textContent = "GET"
-        btn.className = "btn btn-primary"
+        btn.className = "btn second-color"
         form.appendChild(year);
         form.appendChild(btn);
         parentTime.appendChild(form);
@@ -95,7 +95,7 @@ function handelChooseTime(e) {
         const btn = document.createElement("button");
         btn.type = "submit";
         btn.textContent = "GET"
-        btn.className = "btn btn-primary"
+        btn.className = "btn second-color"
         form.appendChild(month);
         form.appendChild(btn);
         parentTime.appendChild(form);
@@ -115,7 +115,7 @@ function handelChooseTime(e) {
         const btn = document.createElement("button");
         btn.type = "submit";
         btn.textContent = "GET"
-        btn.className = "btn btn-primary"
+        btn.className = "btn second-color"
         form.appendChild(dayinp);
         form.appendChild(btn);
         parentTime.appendChild(form);

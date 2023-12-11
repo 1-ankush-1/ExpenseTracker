@@ -16,10 +16,7 @@ exports.buyPremium = (req, res, next) => {
         };
         // console.log(payrazor);
         //the detail you want to show to create order 
-        payrazor.orders.create(razorPayOptions, (err, order) => {
-            if (err) {
-                throw new Error(JSON.stringify(err));
-            }
+        payrazor.orders.create(razorPayOptions).then(order => {
             //create a order
             Order.create({ orderid: order.id, status: "PENDING" }).then(() => {
                 //these value are used to intialise razorpay model
@@ -32,6 +29,8 @@ exports.buyPremium = (req, res, next) => {
             }).catch(err => {
                 throw new Error(err);
             })
+        }).catch(err => {
+            throw new Error(err);
         })
     }
     catch (err) {
