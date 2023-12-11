@@ -19,7 +19,7 @@ function registerUser(e) {
     }
     //data except confirmpassword
     let { confirmpassword, ...updatedUserData } = userdata;
-    axios.post("http://34.229.6.78:3000/auth/signup", updatedUserData).then((result) => {
+    axios.post("http://34.229.6.78:4000/auth/signup", updatedUserData).then((result) => {
         if (result.status === 200) {
             alert(result.data.message);
             window.location.href = "../../login/html/login.html";

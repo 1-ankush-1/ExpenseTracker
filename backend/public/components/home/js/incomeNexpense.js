@@ -136,7 +136,7 @@ async function getDataByDay(e) {
         console.log(dateDetails);
         if (dateDetails.day) {
             timeslot = null;
-            const monthdata = await axios.get(`http://34.229.6.78:3000/premium/report/day/${dateDetails.day}`, {
+            const monthdata = await axios.get(`http://34.229.6.78:4000/premium/report/day/${dateDetails.day}`, {
                 headers: {
                     Authorization: usertoken
                 }
@@ -144,7 +144,7 @@ async function getDataByDay(e) {
             console.log(monthdata);
         } else if (dateDetails.month) {
             timeslot = dateDetails.month;
-            const monthdata = await axios.get(`http://34.229.6.78:3000/premium/report/month/${dateDetails.month}`, {
+            const monthdata = await axios.get(`http://34.229.6.78:4000/premium/report/month/${dateDetails.month}`, {
                 headers: {
                     Authorization: usertoken
                 }
@@ -178,7 +178,7 @@ async function getDataByDay(e) {
 
         } else if (dateDetails.year) {
             timeslot = dateDetails.year;
-            const yeardata = await axios.get(`http://34.229.6.78:3000/premium/report/year/${dateDetails.year}`, {
+            const yeardata = await axios.get(`http://34.229.6.78:4000/premium/report/year/${dateDetails.year}`, {
                 headers: {
                     Authorization: usertoken
                 }
@@ -232,7 +232,7 @@ async function handelDownloadFile(e) {
 
     try {
         if (timespan && timeslot) {
-            const response = await axios.get(`http://34.229.6.78:3000/premium/report/download?filetype=${timespan}&timeslot=${timeslot}`, {
+            const response = await axios.get(`http://34.229.6.78:4000/premium/report/download?filetype=${timespan}&timeslot=${timeslot}`, {
                 headers: {
                     Authorization: usertoken
                 }
