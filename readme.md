@@ -40,6 +40,21 @@ The Premium version offers a host of advanced features. Users can view a leaderb
 - MongoDB Atlas and AWS RDS: These are database services used for storing and retrieving data.In this project, there are two versions of the application: one uses MongoDB Atlas and the other uses AWS RDS with MySQL.
     - MongoDB Atlas is a fully-managed cloud database service for MongoDB,
     - AWS RDS (Relational Database Service) is a web service that makes it easier to set up, operate, and scale a relational database in the cloud.
+
+## Screenshots
+- Homepage Page
+    - Basic
+      ![image](https://github.com/1-ankush-1/ExpenseTracker/assets/95346389/4e3b7f9f-c3c9-4ecd-a56f-9bfec2624554)
+    - Premium
+      ![image](https://github.com/1-ankush-1/ExpenseTracker/assets/95346389/c3135fb5-95d1-42bf-af27-5f70cd3f3ff7)
+- Income Page
+  ![image](https://github.com/1-ankush-1/ExpenseTracker/assets/95346389/48cb61f8-5ac5-4412-aa55-c2af5d64410c)
+
+- LeaderBoard Page
+  ![image](https://github.com/1-ankush-1/ExpenseTracker/assets/95346389/518510bc-db1e-4bf5-b5f9-c035d7959c27)
+
+- Report Page
+  ![image](https://github.com/1-ankush-1/ExpenseTracker/assets/95346389/9bebad7e-d836-4704-aa72-f842f5be120c)
  
 ## Usage
 
