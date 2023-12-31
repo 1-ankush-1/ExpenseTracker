@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Box, IconButton, Menu, MenuItem, Tooltip } from "@mui/material";
 import Page from "../../types/header/page";
+import { useTranslation } from "react-i18next";
 
 const Settings = ({ allOptions }: { allOptions: Page[] }) => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
@@ -26,7 +28,7 @@ const Settings = ({ allOptions }: { allOptions: Page[] }) => {
   return (
     <Box sx={{ flexGrow: 0 }}>
       {/*to give a extra information when hover*/}
-      <Tooltip title="settings">
+      <Tooltip title={t("settings")}>
         <IconButton onClick={handleOpenUserMenu}>
           <img
             style={{
@@ -58,7 +60,7 @@ const Settings = ({ allOptions }: { allOptions: Page[] }) => {
             key={setting.name}
             onClick={() => handlePageNavigation(setting.goto)}
           >
-            {setting.name}
+            {t(setting.name)}
           </MenuItem>
         ))}
       </Menu>

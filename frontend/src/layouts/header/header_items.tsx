@@ -3,8 +3,10 @@ import Page from "../../types/header/page";
 import { useNavigate } from "react-router-dom";
 import { useCallback, useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
+import { useTranslation } from "../../contexts/Translate/translate";
 
 const HeaderItems = ({ Options }: { Options: Page[] }) => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
@@ -35,7 +37,7 @@ const HeaderItems = ({ Options }: { Options: Page[] }) => {
               key={page.name}
               onClick={() => handlePageNavigation(page.goto)}
             >
-              {page.name}
+              {t(page.name)}
             </MenuItem>
           ))}
         </Menu>
@@ -49,7 +51,7 @@ const HeaderItems = ({ Options }: { Options: Page[] }) => {
             color="secondary"
             key={page.name}
           >
-            {page.name}
+            {t(page.name)}
           </Typography>
         ))
       );

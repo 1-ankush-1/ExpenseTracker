@@ -7,20 +7,20 @@ import HeaderItems from "./header_items";
 import Settings from "./settings";
 
 const homePages: Page[] = [
-  { name: "Home", goto: "/" },
-  { name: "Pricing", goto: "/" },
-  { name: "About", goto: "/about" },
-  { name: "Register", goto: "/" },
+  { name: "home", goto: "/" },
+  { name: "price", goto: "/" },
+  { name: "about", goto: "/about" },
+  { name: "register", goto: "/" },
 ];
 
 const regularUserPages: Page[] = [
-  { name: "Home", goto: "/" },
+  { name: "home", goto: "/" },
   { name: "expense", goto: "/" },
   { name: "income", goto: "/" },
 ];
 
 const premiumUserPages: Page[] = [
-  { name: "Home", goto: "/" },
+  { name: "home", goto: "/" },
   { name: "expense", goto: "/" },
   { name: "income", goto: "/" },
   { name: "leaderBoard", goto: "/" },
@@ -28,8 +28,8 @@ const premiumUserPages: Page[] = [
 ];
 
 const settings = [
-  { name: "Profile", goto: "/user/profile" },
-  { name: "Logout", goto: "/logout" },
+  { name: "profile", goto: "/user/profile" },
+  { name: "logout", goto: "/logout" },
 ];
 
 function Header() {

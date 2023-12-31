@@ -2,13 +2,8 @@
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&display=swap");
 
 :root {
-  --black: #171321;
-  --dkblue: #0d314b;
-  --plum: #4b0d49;
-  --hotmag: #ff17e4;
-  --magenta: #e310cb;
-  --aqua: #86fbfb;
-  --white: #f7f8fa;
+
+  /* Other Shared Styles */
   --font-size: 1.3rem;
   --mono: "Oxygen mono", monospace;
   --sans: Oxygen, sans-serif;
@@ -30,23 +25,19 @@ body {
 }
 
 @media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
+  body {
+    font-family: var(--sans);
+    background-color: var(--dark-bg);
+    color: var(--dark-text);
+    font-size: var(--font-size);
   }
 }
 
 @media (prefers-color-scheme: dark) {
   body {
     font-family: var(--sans);
-    background-color: var(--black);
-    color: var(--white);
+    background-color: var(--dark-bg);
+    color: var(--dark-text);
     font-size: var(--font-size);
   }
 
