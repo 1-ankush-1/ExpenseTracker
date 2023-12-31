@@ -17,19 +17,20 @@ router.use("/premium", Authentication, premiumRoutes);
 
 //if no route found
 router.use('/', (req, res, next) => {
+    res.send("no route");
     //get file path
-    let filePath = path.join(__dirname, `../../public/components/${req.url}`);
+    // let filePath = path.join(__dirname, `../../public/components/${req.url}`);
 
-    //check if the path exists
-    fs.access(filePath, fs.constants.F_OK, (err) => {
-        //if not or path is root, redirect to login page
-        if (err || req.url === "/") {
-            //adding absolute path so it doesnt add relative path in other request
-            res.redirect(`${process.env.DOMAIN}/login/html/login.html`);
-        } else {
-            res.sendFile(filePath);
-        }
-    });
+    // //check if the path exists
+    // fs.access(filePath, fs.constants.F_OK, (err) => {
+    //     //if not or path is root, redirect to login page
+    //     if (err || req.url === "/") {
+    //         //adding absolute path so it doesnt add relative path in other request
+    //         res.redirect(`${process.env.DOMAIN}/login/html/login.html`);
+    //     } else {
+    //         res.sendFile(filePath);
+    //     }
+    // });
 });
 
 
