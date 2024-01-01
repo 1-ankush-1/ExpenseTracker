@@ -45,7 +45,12 @@ function Header() {
             sx={{ display: { xs: "none", md: "flex" } }}
             onClick={() => navigate("/")}
           >
-            <img src="../../assets/images/expense.png" alt="expender" />
+            <img
+              src="../../../public/images/expense.png"
+              alt="expender"
+              height={"40px"}
+              width={"40px"}
+            />
           </IconButton>
 
           {userType === UserType.Empty ? (
