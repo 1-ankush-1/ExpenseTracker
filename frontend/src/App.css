@@ -1,0 +1,19 @@
+.selectlanguageBox {
+    position: fixed;
+    top: 80px;
+  }
+  .selectlanguage {
+    width: "100px";
+  }
+  
+  .css-1d3z3hw-MuiOutlinedInput-notchedOutline {
+    display: none;
+  }
+  
+  .themeMode {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 5px;
+  }
+  
