@@ -1,0 +1,27 @@
+.bform {
+  gap: 7px;
+}
+.uploaded-usr-img {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.uploaded-usr-img img {
+  height: 130px;
+  width: 130px;
+  border-radius: 65px;
+  /* filter: blur(0px);  */
+}
+.uploaded-usr-img .heading {
+  position: absolute;
+  color: var(--dark);
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.form-err {
+  margin-top: -20px;
+  font-size: 14px;
+  color: var(--red);
+}
