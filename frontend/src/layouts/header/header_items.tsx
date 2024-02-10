@@ -1,14 +1,16 @@
 import { Box, IconButton, Menu, MenuItem, Typography } from "@mui/material";
 import Page from "../../types/header/page";
 import { useNavigate } from "react-router-dom";
-import { useCallback, useState } from "react";
+import { useCallback, useContext, useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useTranslation } from "../../contexts/Translate/translate";
+import HomeModal from "../../components/modal";
+import { AuthModalContext } from "../../contexts/authModalContext";
 
 const HeaderItems = ({ Options }: { Options: Page[] }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-
+  const authModalCtx = useContext(AuthModalContext);
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -22,7 +24,14 @@ const HeaderItems = ({ Options }: { Options: Page[] }) => {
   const NavOptions = useCallback(
     ({ pages, screen }: { pages: Page[]; screen: string }) => {
       const handlePageNavigation = (goto: string) => {
-        navigate(goto as string);
+        if (goto === "/login") {
+          authModalCtx.handleOpenAuth();
+          // handleOpenLogin();
+        } else if (goto === "/price") {
+          // handleOpenPrice();
+        } else {
+          navigate(goto as string);
+        }
         handleCloseNavMenu();
       };
 
@@ -48,7 +57,6 @@ const HeaderItems = ({ Options }: { Options: Page[] }) => {
             variant="h6"
             component="div"
             sx={{ mr: 4, cursor: "pointer" }}
-            color="secondary"
             key={page.name}
           >
             {t(page.name)}
@@ -56,7 +64,7 @@ const HeaderItems = ({ Options }: { Options: Page[] }) => {
         ))
       );
     },
-    [anchorElNav, navigate]
+    [anchorElNav, navigate, t]
   );
 
   return (
@@ -85,6 +93,10 @@ const HeaderItems = ({ Options }: { Options: Page[] }) => {
         </IconButton>
         <NavOptions pages={Options} screen={"sm"} />
       </Box>
+      <HomeModal
+        open={authModalCtx.openAuth}
+        handleClose={authModalCtx.handleCloseAuth}
+      />
     </>
   );
 };

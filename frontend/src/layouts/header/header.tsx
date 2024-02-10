@@ -1,3 +1,4 @@
+import "../../styles/header/header.css"
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Page from "../../types/header/page";
@@ -8,9 +9,9 @@ import Settings from "./settings";
 
 const homePages: Page[] = [
   { name: "home", goto: "/" },
-  { name: "price", goto: "/" },
+  { name: "price", goto: "/price" },
   { name: "about", goto: "/about" },
-  { name: "register", goto: "/" },
+  { name: "login", goto: "/login" },
 ];
 
 const regularUserPages: Page[] = [
@@ -37,8 +38,8 @@ function Header() {
   const [userType, setUserType] = useState<UserType>(UserType.Empty);
 
   return (
-    <AppBar position="static">
-      <Container maxWidth="xl">
+    <AppBar position="static" >
+      <Container maxWidth="xl" className="header">
         <Toolbar disableGutters>
           {/*Imported Icon*/}
           <IconButton
