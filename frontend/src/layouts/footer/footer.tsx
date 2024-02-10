@@ -17,10 +17,10 @@ const FooterNavigationOptions = [
 const socialMediaLinks = [
   {
     name: <LinkedInIcon />,
-    goto: "https://www.linkedin.com/in/ankush-sharma-2b1b3b1b0/",
+    goto: import.meta.env.VITE_LINKED_IN,
   },
-  { name: <GitHubIcon />, goto: "" },
-  { name: <TwitterIcon />, goto: "" },
+  { name: <GitHubIcon />, goto: import.meta.env.VITE_GITHUB },
+  { name: <TwitterIcon />, goto: import.meta.env.VITE_TWITTER },
 ];
 
 const Footer: React.FC = () => {
@@ -38,7 +38,9 @@ const Footer: React.FC = () => {
               height={"30px"}
               width={"30px"}
             />
-            <Typography variant="h6" className="logo_name">Expendere</Typography>
+            <Typography variant="h6" className="logo_name">
+              Expendere
+            </Typography>
           </div>
           <div className="footer_logo_child_2">
             <h6 className="company-name">
@@ -50,12 +52,8 @@ const Footer: React.FC = () => {
           <div>
             <ul className="list_style">
               {socialMediaLinks.map((item, i) => (
-                <li
-                  onClick={() => navigate(item.goto)}
-                  key={i}
-                  className="cursor_pointer"
-                >
-                  {item.name}
+                <li key={i} className="cursor_pointer">
+                  <a href={item.goto}>{item.name}</a>
                 </li>
               ))}
             </ul>
