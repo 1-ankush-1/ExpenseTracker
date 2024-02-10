@@ -1,0 +1,9 @@
+.accordians-parent {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.accordians {
+  padding: 1.5em 0px;
+  width: 86%;
+}
